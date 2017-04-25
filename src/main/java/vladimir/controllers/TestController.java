@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/rest", produces = "application/json; charset=UTF-8")
 public class TestController {
 
-	@RequestMapping(value = "/counter", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/test", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<String> test() {
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
