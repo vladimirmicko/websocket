@@ -13,12 +13,12 @@ export class AppComponent {
   counter: string = 'not known';
   ws: $Websocket;
   constructor() {
-    this.ws = new $WebSocket("ws://localhost:8091/counter");
+    this.ws = new $WebSocket("ws://localhost:8091/websocket/counter");
   }
 
   subscribe($event) {
     console.log("trying to subscribe to ws");
-    this.ws = new $WebSocket("ws://localhost:8091/counter");
+    this.ws = new $WebSocket("ws://localhost:8091/websocket/counter");
     this.ws.send("Hello");
     this.ws.getDataStream().subscribe(
       res => {
