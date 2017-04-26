@@ -23,7 +23,7 @@ public class TestController {
     @Autowired
     private CounterHandler counterHandler;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ResponseEntity<String> test() {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
