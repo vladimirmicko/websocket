@@ -3,65 +3,50 @@
  * System configuration for Angular 2 samples
  * Adjust as necessary for your application needs.
  */
-(function(global) {
+(function (global) {
 
-  var ngVer = '@2.0.0'; // lock in the angular package version; do not let it float to current!
-
-  //map tells the System loader where to look for things
+  // map tells the System loader where to look for things
   var map = {
-    'app':                        'app',
+    'app': 'app', // 'this is reference address for Angular to look for files',
+    '@angular': 'node_modules/@angular',
+    'rxjs': 'node_modules/rxjs',
+    'angular2-websocket': 'node_modules/angular2-websocket'
 
-    '@angular':                   'https://unpkg.com/@angular', // sufficient if we didn't pin the version
-    'rxjs':                       'https://unpkg.com/rxjs@5.0.0-beta.12',
-    'ts':                         'https://unpkg.com/plugin-typescript@4.0.10/lib/plugin.js',
-    'typescript':                 'https://unpkg.com/typescript@2.0.2/lib/typescript.js',
- };
-
-  //packages tells the System loader how to load when no filename and/or no extension
-  var packages = {
-    'app':                        { main: 'main.ts',  defaultExtension: 'ts' },
-    'rxjs':                       { defaultExtension: 'js' }
   };
-
+  // packages tells the System loader how to load when no filename and/or no extension
+  var packages = {
+    'app': { main: 'main.js', defaultExtension: 'js' },
+    'rxjs': { defaultExtension: 'js' },
+    'angular2-websocket': { main: 'angular2-websocket.js', defaultExtension: 'js' }    
+  };
   var ngPackageNames = [
     'common',
     'compiler',
     'core',
+    'forms',
+    'http',
     'platform-browser',
-    'platform-browser-dynamic'
+    'platform-browser-dynamic',
+    'router',
+    'router-deprecated',
+    'upgrade',
   ];
-
-  // Add map entries for each angular package
-  // only because we're pinning the version with `ngVer`.
-  ngPackageNames.forEach(function(pkgName) {
-    map['@angular/'+pkgName] = 'https://unpkg.com/@angular/' + pkgName + ngVer;
-  });
-
+  // Individual files (~300 requests):
+  function packIndex(pkgName) {
+    packages['@angular/' + pkgName] = { main: 'index.js', defaultExtension: 'js' };
+  }
+  // Bundled (~40 requests):
+  function packUmd(pkgName) {
+    packages['@angular/' + pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+  }
+  // Most environments should use UMD; some (Karma) need the individual index files
+  var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
   // Add package entries for angular packages
-  ngPackageNames.forEach(function(pkgName) {
-
-    // Bundled (~40 requests):
-    packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js' };
-
-    // Individual files (~300 requests):
-    //packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
-  });
-
+  ngPackageNames.forEach(setPackageConfig);
   var config = {
-    // DEMO ONLY! REAL CODE SHOULD NOT TRANSPILE IN THE BROWSER
-    transpiler: 'ts',
-    typescriptOptions: {
-      tsconfig: true
-    },
-    meta: {
-      'typescript': {
-        "exports": "ts"
-      }
-    },
     map: map,
     packages: packages
   };
-
   System.config(config);
 
 })(this);
